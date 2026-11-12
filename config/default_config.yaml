@@ -1,0 +1,66 @@
+system:
+  timezone: "Asia/Kolkata"
+  data_directory: "./data"
+  ticks_storage_directory: "./data/ticks"
+  stale_feed_timeout_seconds: 3.0
+  reconnect_backoff_base_seconds: 1.5
+  max_reconnect_attempts: 10
+
+schedule:
+  pre_market_input_start: "07:30"
+  pre_market_input_lock: "08:00"
+  broker_auth_time: "09:00"
+  market_open_time: "09:15"
+  trigger_window_end: "09:20"
+  auto_square_off_time: "15:15"
+  eod_backup_time: "15:45"
+
+strategy:
+  underlying: "NIFTY"
+  strike_rule: "ATM" # ATM, ATM+1, ATM-1
+  expiry_preference: "NEAREST_WEEKLY"
+  expiry_roll_cutoff_time: "14:30"
+  
+  bias_reference_source: "USER_SPOT_VS_INDEX_OPEN"
+  condition1_reference: "USER_AVERAGE"
+  condition2_source: "LTP"
+  consecutive_ticks_confirm: 2
+  opposite_setup_action: "SKIP"
+  direction_allowed: "BUY_ONLY"
+
+order_execution:
+  order_type: "LIMIT_BUFFER"
+  limit_buffer_points: 0.50
+  max_retries: 3
+  retry_delay_ms: 250
+  unfilled_0920_action: "CANCEL"
+
+risk:
+  max_trades_per_day: 1
+  max_lots_cap: 10
+  max_order_value_inr: 200000.0
+  max_daily_loss_inr: 5000.0
+  max_bid_ask_spread_points: 2.0
+  min_market_depth_quantity: 100
+  
+  default_stop_loss:
+    type: "POINTS"
+    value: 20.0
+  default_target:
+    type: "POINTS"
+    value: 40.0
+  trailing_sl:
+    enabled: true
+    trail_after_points: 15.0
+    step_points: 5.0
+
+paper_engine:
+  fill_delay_ms: 50
+  slippage_points: 0.25
+  charges:
+    brokerage_per_order: 20.0
+    stt_rate: 0.000625
+    exchange_txn_fee_rate: 0.000495
+    gst_rate: 0.18
+    stamp_duty_rate: 0.00003
+
